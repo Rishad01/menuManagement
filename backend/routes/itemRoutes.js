@@ -8,7 +8,7 @@ itemRoute.get('/', getAllItems);
 itemRoute.get('/category/:identifier', getItemsByCategoryIdOrName);
 itemRoute.get('/subcategory/:subCategoryIdOrName', getItemsBySubCategoryIdOrName);
 itemRoute.get('/:identifier', getItemByIdOrName);
-itemRoute.put(':identifier',updateItemByIdOrName);
+itemRoute.put('/:identifier',updateItemByIdOrName);
 itemRoute.get('/search/:name', searchItemByName);
 
 export default itemRoute;

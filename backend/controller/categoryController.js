@@ -1,5 +1,5 @@
 import Category from "../model/category.js";
-
+import mongoose from "mongoose";
 export const createCategory = async (req, res) => {
     try {
       const category = new Category(req.body);
@@ -40,13 +40,19 @@ export const createCategory = async (req, res) => {
     }
   };
 
-  export const updateCategoryByName = async (req, res) => {
+  //update category throgh name or ID
+  export const updateCategory = async (req, res) => {
     try {
-      const { name } = req.params;
+      const { identifier } = req.params;
+        console.log(req.params);
+        // Determine whether the identifier is an ID or a name
+        const query = mongoose.Types.ObjectId.isValid(identifier)
+          ? { _id: identifier }
+          : { name: identifier };
       const updates = req.body;
   
       // Find and update the category by name
-      const category = await Category.findOneAndUpdate({ name }, updates, {
+      const category = await Category.findOneAndUpdate( query , updates, {
         new: true, // Return the updated document
       });
   

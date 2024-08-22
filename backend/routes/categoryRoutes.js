@@ -1,5 +1,5 @@
 import express from 'express';
-import { createCategory,getAllCategories,getCategory,updateCategoryByName} from '../controller/categoryController.js';
+import { createCategory,getAllCategories,getCategory,updateCategory} from '../controller/categoryController.js';
 
 // Creating the router instance
 const categoryRoute = express.Router();
@@ -8,6 +8,6 @@ const categoryRoute = express.Router();
 categoryRoute.post('/', createCategory);
 categoryRoute.get('/',getAllCategories);
 categoryRoute.get('/:name',getCategory);
-categoryRoute.put('/update/:name',updateCategoryByName);
+categoryRoute.put('/update/:identifier',updateCategory);
 
 export default categoryRoute;

@@ -19,7 +19,7 @@ export const createCategory = async (req, res) => {
     }
   };
   
-  // Get category by name or ID
+  // Get category by name
   export const getCategory = async (req, res) => {
     try {
       const { name } = req.params;

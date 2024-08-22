@@ -16,4 +16,4 @@ connectDB();
 app.use('/api/categories', categoryRoute);
 app.use('/api/subcategories',subcategoryRoute);
 app.use('/api/items',itemRoute);
-app.listen(5000, () => console.log(`Server running on port 5000`));
+app.listen(process.env.PORT, () => console.log(`Server running on port 5000`));

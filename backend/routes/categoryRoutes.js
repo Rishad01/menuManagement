@@ -7,7 +7,7 @@ const categoryRoute = express.Router();
 // Defining the route
 categoryRoute.post('/', createCategory);
 categoryRoute.get('/',getAllCategories);
-categoryRoute.get('/:name',getCategory);
+categoryRoute.get('/:identifier',getCategory);
 categoryRoute.put('/update/:identifier',updateCategory);
 
 export default categoryRoute;

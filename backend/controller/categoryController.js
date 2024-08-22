@@ -19,17 +19,20 @@ export const createCategory = async (req, res) => {
     }
   };
   
-  // Get category by name
+  // Get category by name or ID
   export const getCategory = async (req, res) => {
     try {
-      const { name } = req.params;
-      let category;
-  
       
-      if (name) {
-        category = await Category.findOne({ name: name });
-      }
+      const { identifier } = req.params;
+      //console.log(identifier);
+      // Determine whether the identifier is an ID or a name
+      const query = mongoose.Types.ObjectId.isValid(identifier)
+        ? { _id: identifier }
+        : { name: identifier };
   
+      // Find the category by ID or name
+      const category = await Categoryategory.findOne(query);
+      
       if (!category) {
         return res.status(404).json({ error: 'Category not found' });
       }

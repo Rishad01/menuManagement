@@ -76,7 +76,7 @@ export const getSubCategoriesByCategoryIdentifier = async (req, res) => {
   export const getSubCategoryByNameOrId = async (req, res) => {
     try {
       const { identifier } = req.params;
-      console.log(identifier);
+      //console.log(identifier);
       // Determine whether the identifier is an ID or a name
       const query = mongoose.Types.ObjectId.isValid(identifier)
         ? { _id: identifier }
@@ -98,7 +98,6 @@ export const getSubCategoriesByCategoryIdentifier = async (req, res) => {
   export const updatesubCategory = async (req, res) => {
     try {
         const { identifier } = req.params;
-        //console.log(identifier);
         // Determine whether the identifier is an ID or a name
         const query = mongoose.Types.ObjectId.isValid(identifier)
           ? { _id: identifier }

@@ -13,6 +13,10 @@ app.use(express.json());
 // Middleware to parse urlencoded data
 app.use(express.urlencoded({ extended: true }));
 connectDB();
+
+app.get('/', (req, res) => {
+    res.send('Welcome to the Menu Management API');
+  });
 app.use('/api/categories', categoryRoute);
 app.use('/api/subcategories',subcategoryRoute);
 app.use('/api/items',itemRoute);

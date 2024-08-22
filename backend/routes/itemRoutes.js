@@ -3,10 +3,10 @@ import { createItem,getItemsByCategoryIdOrName,getAllItems,getItemsBySubCategory
 
 const itemRoute=express.Router();
 
-itemRoute.post('/',createItem);
+itemRoute.post('/:categoryId/:subCategoryId',createItem);
 itemRoute.get('/', getAllItems);
 itemRoute.get('/category/:identifier', getItemsByCategoryIdOrName);
-itemRoute.get('/subcategory/:subCategoryIdOrName', getItemsBySubCategoryIdOrName);
+itemRoute.get('/subcategory/:identifier', getItemsBySubCategoryIdOrName);
 itemRoute.get('/:identifier', getItemByIdOrName);
 itemRoute.put('/:identifier',updateItemByIdOrName);
 itemRoute.get('/search/:name', searchItemByName);

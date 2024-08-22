@@ -1,12 +1,12 @@
 import Item from '../model/item.js';
 import Category from '../model/category.js';
 import SubCategory from '../model/subcategory.js';
-
+import mongoose from 'mongoose';
 export const createItem = async (req, res) => {
   try {
     const { categoryId, subCategoryId } = req.params;
-    const { name, image, description, taxApplicable, tax, baseAmount, discount } = req.body;
-
+    const { name, image, description,tax,baseAmount, discount } = req.body;
+    console.log(req.body);
     // Ensure that either categoryId or subCategoryId is provided
     if (!categoryId && !subCategoryId) {
       return res.status(400).json({ error: 'Either categoryId or subCategoryId must be provided.' });
@@ -14,7 +14,7 @@ export const createItem = async (req, res) => {
 
     // Validate if categoryId is provided
     if (categoryId) {
-      const category = await Category.findById(categoryId);
+      var category = await Category.findById(categoryId);
       if (!category) {
         return res.status(404).json({ error: 'Category not found.' });
       }
@@ -36,8 +36,8 @@ export const createItem = async (req, res) => {
       name,
       image,
       description,
-      taxApplicable,
-      tax: taxApplicable ? tax : 0,
+      taxApplicable: category.taxApplicability,
+        tax: category.taxApplicability ? tax : category.tax,
       baseAmount,
       discount,
       totalAmount,
@@ -109,12 +109,12 @@ export const getItemsByCategoryIdOrName = async (req, res) => {
       let subCategory;
   
       // Check if the parameter is a valid ObjectId (i.e., subCategoryId)
-      if (mongoose.Types.ObjectId.isValid(subCategoryIdOrName)) {
+      if (mongoose.Types.ObjectId.isValid(identifier)) {
         // Find the sub-category by ID
-        subCategory = await SubCategory.findById(subCategoryIdOrName);
+        subCategory = await SubCategory.findById(identifier);
       } else {
         // Otherwise, find the sub-category by name
-        subCategory = await SubCategory.findOne({ name: subCategoryIdOrName });
+        subCategory = await SubCategory.findOne({ name: identifier });
       }
   
       // If no sub-category is found, return a 404 error
@@ -170,23 +170,31 @@ export const getItemsByCategoryIdOrName = async (req, res) => {
   
       // Check if the parameter is a valid ObjectId (i.e., item ID)
       if (mongoose.Types.ObjectId.isValid(identifier)) {
-        // Find and update the item by ID
-        item = await Item.findByIdAndUpdate(identifier, updateData, {
-          new: true,            // Return the updated document
-          runValidators: true   // Validate the updates against the model schema
-        });
+        // Find the item by ID first to get the existing values
+        item = await Item.findById(identifier);
+  
       } else {
-        // Otherwise, find and update the item by name
-        item = await Item.findOneAndUpdate({ name: identifier }, updateData, {
-          new: true,            // Return the updated document
-          runValidators: true   // Validate the updates against the model schema
-        });
+        // Otherwise, find the item by name
+        item = await Item.findOne({ name: identifier });
       }
   
       // If no item is found, return a 404 error
       if (!item) {
         return res.status(404).json({ error: 'Item not found' });
       }
+  
+      // If baseAmount or discount is not provided, use the existing values from the database
+      const baseAmount = updateData.baseAmount !== undefined ? updateData.baseAmount : item.baseAmount;
+      const discount = updateData.discount !== undefined ? updateData.discount : item.discount;
+  
+      // Calculate the new totalAmount
+      updateData.totalAmount = baseAmount - discount;
+  
+      // Update the item fields with the new data
+      Object.assign(item, updateData);
+  
+      // Save the updated item
+      await item.save();
   
       res.status(200).json(item); // Send the updated item as the response
     } catch (error) {

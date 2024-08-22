@@ -4,7 +4,8 @@ import SubCategory from '../model/subcategory.js';
 
 export const createItem = async (req, res) => {
   try {
-    const { name, image, description, taxApplicable, tax, baseAmount, discount, categoryId, subCategoryId } = req.body;
+    const { categoryId, subCategoryId } = req.params;
+    const { name, image, description, taxApplicable, tax, baseAmount, discount } = req.body;
 
     // Ensure that either categoryId or subCategoryId is provided
     if (!categoryId && !subCategoryId) {

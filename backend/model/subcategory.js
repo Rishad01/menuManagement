@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+//sub category model
 const subCategorySchema = new mongoose.Schema({
   name: {
     type: String,

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+//category model
 const categorySchema = new mongoose.Schema({
   name: { type: String, required: true, unique:true },
   image: { type: String },
